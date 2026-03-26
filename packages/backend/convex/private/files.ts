@@ -14,6 +14,7 @@ import rag from "../system/ai/rag";
 import { vContextOptions } from "@convex-dev/agent";
 import { Id } from "../_generated/dataModel";
 import { paginationOptsValidator } from "convex/server";
+import { internal } from "../_generated/api";
 
 function guessMimeType(filename: string, bytes: ArrayBuffer): string {
   return (
@@ -107,6 +108,20 @@ export const addFile = action({
       });
     }
 
+    const subscription = await context.runQuery(
+      internal.system.subscriptions.getByOrganizationId,
+      {
+        organizationId: orgId,
+      },
+    );
+
+    if (subscription?.status !== "active") {
+      throw new ConvexError({
+        code: "BAD_REQUEST",
+        message: "Missing Subscription",
+      });
+    }
+
     const { bytes, filename, category } = args;
 
     const mimeType = args.mimeType || guessMimeType(filename, bytes);
@@ -183,7 +198,7 @@ export const list = query({
     });
 
     const files = await Promise.all(
-      results.page.map((entry) => convertEntryToPublicFile(context, entry))
+      results.page.map((entry) => convertEntryToPublicFile(context, entry)),
     );
 
     const filteredFiles = args.category
@@ -217,7 +232,7 @@ export type EntryMetadata = {
 
 async function convertEntryToPublicFile(
   context: QueryCtx,
-  entry: Entry
+  entry: Entry,
 ): Promise<PublicFile> {
   const metadata = entry.metadata as EntryMetadata | undefined;
   const storageId = metadata?.storageId;

@@ -31,6 +31,20 @@ export const enhanceResponse = action({
       });
     }
 
+    const subscription = await context.runQuery(
+      internal.system.subscriptions.getByOrganizationId,
+      {
+        organizationId: orgId,
+      },
+    );
+
+    if (subscription?.status !== "active") {
+      throw new ConvexError({
+        code: "BAD_REQUEST",
+        message: "Missing Subscription",
+      });
+    }
+
     const response = await generateText({
       model: google("gemini-2.5-flash-lite"),
       messages: [
