@@ -50,8 +50,20 @@ export const create = action({
       });
     }
 
-    // Implement Subscription check
-    const shouldTriggerAgent = conversation.status === "unresolved";
+    //* This refreshes the user's session if they are within the threshold
+    await context.runMutation(internal.system.contactSessions.refresh, {
+      contactSessionId: args.contactSessionId,
+    });
+
+    const subscription = await context.runQuery(
+      internal.system.subscriptions.getByOrganizationId,
+      {
+        organizationId: conversation.organizationId,
+      },
+    );
+
+    const shouldTriggerAgent =
+      conversation.status === "unresolved" && subscription?.status === "active";
 
     if (shouldTriggerAgent) {
       await supportAgent.generateText(

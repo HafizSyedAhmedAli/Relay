@@ -35,6 +35,7 @@ import { ConversationStatusButton } from "../components/conversation-status-butt
 import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Skeleton } from "@workspace/ui/components/skeleton";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
@@ -59,7 +60,7 @@ export const ConversationIdView = ({
   const messages = useThreadMessages(
     api.private.messages.getMany,
     conversation?.threadId ? { threadId: conversation.threadId } : "skip",
-    { initialNumItems: 10 }
+    { initialNumItems: 10 },
   );
 
   const { topElementRef, handleLoadMore, canLoadMore, isLoadingMore } =
@@ -79,6 +80,7 @@ export const ConversationIdView = ({
 
       form.setValue("message", response);
     } catch (error) {
+      toast.error("Something went wrong.");
       console.error(error);
     } finally {
       setIsEnhancing(false);
@@ -102,7 +104,7 @@ export const ConversationIdView = ({
 
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const updateConversationStatus = useMutation(
-    api.private.conversations.updateStatus
+    api.private.conversations.updateStatus,
   );
   const handleToggleStatus = async () => {
     if (!conversation) return;
@@ -254,7 +256,7 @@ export const ConversationIdViewLoading = () => {
               <div
                 className={cn(
                   "group flex w-full items-end justify-end gap-2 py-2 [&>div]:max-w-[80%]",
-                  isUser ? "is-user" : "is-assistant flex-row-reverse"
+                  isUser ? "is-user" : "is-assistant flex-row-reverse",
                 )}
                 key={i}
               >
