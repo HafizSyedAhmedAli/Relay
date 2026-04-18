@@ -66,18 +66,38 @@ export const create = action({
       conversation.status === "unresolved" && subscription?.status === "active";
 
     if (shouldTriggerAgent) {
-      await supportAgent.generateText(
-        context,
-        { threadId: args.threadId },
-        {
-          prompt: args.prompt,
-          tools: {
-            resolveConversationTool: resolveConversation,
-            escalateConversationTool: escalateConversation,
-            searchTool: search,
+      try {
+        await supportAgent.generateText(
+          context,
+          { threadId: args.threadId },
+          {
+            prompt: args.prompt,
+            tools: {
+              resolveConversationTool: resolveConversation,
+              escalateConversationTool: escalateConversation,
+              searchTool: search,
+            },
           },
-        },
-      );
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        const isRateLimit =
+          message.includes("quota") ||
+          message.includes("rate") ||
+          message.includes("429");
+
+        if (isRateLimit) {
+          // User message already saved by generateText internally, just respond
+          await saveMessage(context, components.agent, {
+            threadId: args.threadId,
+            message: {
+              role: "assistant",
+              content:
+                "I'm temporarily unavailable due to high demand. Please try again in a moment.",
+            },
+          });
+        }
+      }
     } else {
       await saveMessage(context, components.agent, {
         threadId: args.threadId,

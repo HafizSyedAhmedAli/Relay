@@ -106,11 +106,16 @@ export const WidgetChatScreen = () => {
 
     form.reset();
 
-    await createMessage({
-      threadId: conversation.threadId,
-      prompt: values.message,
-      contactSessionId,
-    });
+    try {
+      await createMessage({
+        threadId: conversation.threadId,
+        prompt: values.message,
+        contactSessionId,
+      });
+    } catch (error) {
+      // Restore message so user doesn't lose it
+      form.setValue("message", values.message);
+    }
   };
 
   return (
