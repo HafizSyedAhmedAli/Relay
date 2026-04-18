@@ -44,9 +44,9 @@ export const PluginCard = ({
           <Image
             alt="Platform"
             className="object-contain"
-            height={40}
-            width={40}
-            src="/logo.svg"
+            height={80}
+            width={80}
+            src="/RelayLogo.png"
           />
         </div>
       </div>

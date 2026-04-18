@@ -233,7 +233,7 @@ export const VapiView = () => {
           </div>
 
           <div className="mt-8">
-            {vapiPlugin ? (
+            {false ? (
               <VapiConnectedView onDisconnect={toggleConnection} />
             ) : (
               <PluginCard

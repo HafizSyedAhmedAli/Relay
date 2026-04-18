@@ -147,7 +147,7 @@ export const WidgetChatScreen = () => {
                   seed="assistant"
                   size={32}
                   className="border-0"
-                  imageUrl="/logo.svg"
+                  imageUrl="/LogoRelay.png"
                 />
               )}
             </AIMessage>
