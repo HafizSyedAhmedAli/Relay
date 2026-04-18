@@ -161,7 +161,7 @@ export const DashboardSidebar = () => {
         </SidebarGroup>
 
         {/* Account */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Account</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -185,7 +185,7 @@ export const DashboardSidebar = () => {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
 
       <SidebarFooter>

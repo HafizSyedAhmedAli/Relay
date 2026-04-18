@@ -113,14 +113,25 @@ export const PremiumFeatureOverlay = ({
                 </div>
               ))}
             </div>
-
-            <Button
+            {/* TODO: Add this after making Clerk Production */}
+            {/* <Button
               className="w-full"
               onClick={() => router.push("/billing")}
               size="lg"
-            >
-              View Plans
-            </Button>
+            > */}
+            {/* View Plans */}
+            <p className="text-center">
+              Contact Us: <br />
+              <span>Email: </span>
+              <a
+                href="mailto:hafizsyedahmedali12@gmail.com"
+                className="hover:underline text-blue-600"
+              >
+                hafizsyedahmedali12@gmail.com
+              </a>
+              <br /> Phone: +92 328-2488387
+            </p>
+            {/* </Button> */}
           </CardContent>
         </Card>
       </div>
