@@ -5,9 +5,9 @@ import { assert } from "convex-helpers";
 import { generateText } from "ai";
 
 const AI_MODELS = {
-  image: google.chat("gemini-2.5-flash-lite"),
-  pdf: google.chat("gemini-2.5-flash-lite"),
-  html: google.chat("gemini-2.5-flash-lite"),
+  image: google.chat("gemini-2.5-flash"),
+  pdf: google.chat("gemini-2.5-flash"),
+  html: google.chat("gemini-2.5-flash")
 } as const;
 
 const SUPPORTED_IMAGE_TYPES = [
